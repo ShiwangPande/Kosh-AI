@@ -5,7 +5,10 @@ set -e
 if [ "$SERVICE_TYPE" = "backend" ]; then
     echo "Running database migrations..."
     alembic upgrade head
+    echo "Initializing admin user..."
+    python scripts/init_admin.py
 fi
+
 
 # Execute the passed command
 exec "$@"
