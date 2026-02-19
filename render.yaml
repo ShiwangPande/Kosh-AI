@@ -1,31 +1,25 @@
 services:
-  # ── Backend API ──────────────────────────────────────────
   - type: web
     name: kosh-ai-backend
     env: docker
     dockerfilePath: infrastructure/Dockerfile.backend
-    plan: free # or your desired plan
+    envVars:
+      - fromGroup: kosh-ai-env
+
+  - type: worker
+    name: kosh-ai-worker
+    env: docker
+    dockerfilePath: infrastructure/Dockerfile.worker
+    envVars:
+      - fromGroup: kosh-ai-env
+
+envVarGroups:
+  - name: kosh-ai-env
     envVars:
       - key: APP_ENV
         value: production
       - key: DEBUG
         value: "false"
-      - fromGroup: kosh-ai-secrets
-
-  # ── Background Worker ────────────────────────────────────
-  - type: worker
-    name: kosh-ai-worker
-    env: docker
-    dockerfilePath: infrastructure/Dockerfile.worker
-    plan: free
-    envVars:
-      - key: APP_ENV
-        value: production
-      - fromGroup: kosh-ai-secrets
-
-envVarGroups:
-  - name: kosh-ai-secrets
-    envVars:
       - key: DATABASE_URL
         value: placeholder
       - key: DATABASE_URL_SYNC
