@@ -27,13 +27,24 @@ envVarGroups:
   - name: kosh-ai-secrets
     envVars:
       - key: DATABASE_URL
+        value: placeholder
       - key: DATABASE_URL_SYNC
+        value: placeholder
       - key: REDIS_URL
+        value: placeholder
       - key: CELERY_BROKER_URL
+        value: placeholder
       - key: CELERY_RESULT_BACKEND
+        value: placeholder
       - key: JWT_SECRET_KEY
+        value: placeholder
       - key: SECRET_KEY
+        value: placeholder
       - key: CLOUDINARY_CLOUD_NAME
+        value: placeholder
       - key: CLOUDINARY_API_KEY
+        value: placeholder
       - key: CLOUDINARY_API_SECRET
+        value: placeholder
       - key: BACKEND_CORS_ORIGINS
+        value: placeholder
