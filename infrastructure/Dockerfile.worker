@@ -15,5 +15,11 @@ COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ ./backend/
+COPY scripts/entrypoint.sh ./scripts/
+RUN chmod +x ./scripts/entrypoint.sh
 
+ENV SERVICE_TYPE=worker
+
+ENTRYPOINT ["./scripts/entrypoint.sh"]
 CMD ["celery", "-A", "backend.workers.celery_app", "worker", "--loglevel=info", "-Q", "ocr,celery"]
+
