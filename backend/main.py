@@ -12,7 +12,7 @@ from backend.utils.observability import (
     generate_prometheus_metrics,
     detailed_health_check,
 )
-from backend.api import auth, merchants, suppliers, invoices, recommendations, admin, whatsapp, learning, market, predictions, autonomy, orders, onboarding
+from backend.api import auth, merchants, suppliers, invoices, recommendations, admin, whatsapp, learning, market, predictions, autonomy, orders, onboarding, docs
 
 settings = get_settings()
 
