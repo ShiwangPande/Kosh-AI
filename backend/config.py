@@ -45,6 +45,10 @@ class Settings(BaseSettings):
     CLOUDINARY_API_KEY: str = ""
     CLOUDINARY_API_SECRET: str = ""
 
+    # ── Resend ──
+    RESEND_API_KEY: str = ""
+
+
     # ── OCR ──
     OCR_PRIMARY_PROVIDER: str = "tesseract"
     TESSERACT_CMD: Optional[str] = None
@@ -97,8 +101,10 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        extra="ignore"
+        extra="ignore",
+        protected_namespaces=()
     )
+
 
 
 @lru_cache
