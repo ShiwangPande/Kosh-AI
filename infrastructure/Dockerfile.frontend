@@ -1,0 +1,18 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependencies first for caching
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm install
+
+# Copy application files
+COPY frontend/ .
+
+# Build for production (can be overridden by docker-compose for dev)
+RUN npm run build
+
+EXPOSE 3000
+
+# Default to production server, docker-compose will override for dev
+CMD ["node", ".next/standalone/server.js"]

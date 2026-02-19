@@ -1,0 +1,7 @@
+['POST'] /api/v1/invoices/upload
+['GET'] /api/v1/invoices
+['POST'] /api/v1/invoices/{invoice_id}/verify
+['POST'] /api/v1/invoices/{invoice_id}/cancel
+['GET'] /api/v1/invoices/{invoice_id}/items
+['GET'] /api/v1/invoices/{invoice_id}
+['DELETE'] /api/v1/invoices/{invoice_id}

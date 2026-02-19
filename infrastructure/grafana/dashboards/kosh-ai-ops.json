@@ -1,0 +1,120 @@
+{
+    "annotations": {
+        "list": []
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "links": [],
+    "panels": [
+        {
+            "title": "Request Rate (req/s)",
+            "type": "timeseries",
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 0
+            },
+            "targets": [
+                {
+                    "expr": "rate(kosh_http_requests_total[5m])",
+                    "legendFormat": "{{endpoint}}"
+                }
+            ]
+        },
+        {
+            "title": "OCR Tasks (total)",
+            "type": "stat",
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 12,
+                "y": 0
+            },
+            "targets": [
+                {
+                    "expr": "kosh_ocr_tasks_total",
+                    "legendFormat": "{{status}}"
+                }
+            ]
+        },
+        {
+            "title": "Dead Letter Queue Size",
+            "type": "gauge",
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 18,
+                "y": 0
+            },
+            "targets": [
+                {
+                    "expr": "kosh_dlq_messages_total",
+                    "legendFormat": "DLQ"
+                }
+            ]
+        },
+        {
+            "title": "OCR Processing Duration",
+            "type": "timeseries",
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 8
+            },
+            "targets": [
+                {
+                    "expr": "kosh_ocr_duration_seconds_sum / kosh_ocr_duration_seconds_count",
+                    "legendFormat": "avg duration"
+                }
+            ]
+        },
+        {
+            "title": "Invoice Uploads",
+            "type": "stat",
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 12,
+                "y": 8
+            },
+            "targets": [
+                {
+                    "expr": "kosh_invoice_uploads_total",
+                    "legendFormat": "uploads"
+                }
+            ]
+        },
+        {
+            "title": "Recommendations Generated",
+            "type": "stat",
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 18,
+                "y": 8
+            },
+            "targets": [
+                {
+                    "expr": "kosh_recommendations_generated_total",
+                    "legendFormat": "recommendations"
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 39,
+    "tags": [
+        "kosh-ai"
+    ],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-1h",
+        "to": "now"
+    },
+    "title": "Kosh-AI Operations",
+    "uid": "kosh-ai-ops"
+}

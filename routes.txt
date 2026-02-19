@@ -1,0 +1,48 @@
+['GET', 'HEAD'] /openapi.json
+['GET', 'HEAD'] /docs
+['GET', 'HEAD'] /docs/oauth2-redirect
+['GET', 'HEAD'] /redoc
+['POST'] /api/v1/auth/register
+['POST'] /api/v1/auth/login
+['POST'] /api/v1/auth/refresh
+['GET'] /api/v1/auth/me
+['GET'] /api/v1/merchants/me
+['PATCH'] /api/v1/merchants/me
+['GET'] /api/v1/merchants/{merchant_id}
+['GET'] /api/v1/suppliers
+['POST'] /api/v1/suppliers
+['GET'] /api/v1/suppliers/{supplier_id}
+['PATCH'] /api/v1/suppliers/{supplier_id}
+['POST'] /api/v1/invoices/upload
+['GET'] /api/v1/invoices
+['POST'] /api/v1/invoices/{invoice_id}/cancel
+['GET'] /api/v1/invoices/{invoice_id}
+['GET'] /api/v1/invoices/{invoice_id}/items
+['DELETE'] /api/v1/invoices/{invoice_id}
+['POST'] /api/v1/recommendations/generate/{invoice_id}
+['GET'] /api/v1/recommendations/{invoice_id}
+['GET'] /api/v1/admin/weights
+['PUT'] /api/v1/admin/weights
+['GET'] /api/v1/admin/logs
+['POST'] /api/v1/admin/merchants/{merchant_id}/flag
+['POST'] /api/v1/admin/merchants/{merchant_id}/unflag
+['POST'] /api/v1/admin/suppliers/{supplier_id}/approve
+['GET'] /api/v1/admin/analytics
+['GET'] /api/v1/whatsapp/webhook
+['POST'] /api/v1/whatsapp/webhook
+['POST'] /api/v1/learning/feedback
+['GET'] /api/v1/learning/merchant/preferences
+['GET'] /api/v1/learning/system/model-stats
+['GET'] /api/v1/market/price/{product_id}
+['GET'] /api/v1/market/suppliers/{city}
+['GET'] /api/v1/market/trends
+['GET'] /api/v1/market/alerts
+['GET'] /api/v1/predict/price/{product_id}
+['GET'] /api/v1/predict/restock/{merchant_id}
+['GET'] /api/v1/system/metrics
+['GET'] /api/v1/system/models
+['GET'] /api/v1/system/experiments
+['GET'] /api/v1/system/status
+['GET'] /health
+['GET'] /metrics
+['GET'] /

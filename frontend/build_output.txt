@@ -1,0 +1,30 @@
+  ▲ Next.js 14.2.0
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./node_modules/next/dist/client/components/promise-queue.js
+Module not found: Can't resolve '@swc/helpers/_/_class_private_field_loose_base'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/next/dist/client/components/router-reducer/reducers/prefetch-reducer.js
+./node_modules/next/dist/client/components/router-reducer/prefetch-cache-utils.js
+./node_modules/next/dist/client/components/router-reducer/create-initial-router-state.js
+./node_modules/next/dist/client/components/app-router.js
+
+./node_modules/next/dist/client/components/promise-queue.js
+Module not found: Can't resolve '@swc/helpers/_/_class_private_field_loose_key'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/next/dist/client/components/router-reducer/reducers/prefetch-reducer.js
+./node_modules/next/dist/client/components/router-reducer/prefetch-cache-utils.js
+./node_modules/next/dist/client/components/router-reducer/create-initial-router-state.js
+./node_modules/next/dist/client/components/app-router.js
+
+
+> Build failed because of webpack errors

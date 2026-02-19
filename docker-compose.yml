@@ -1,0 +1,166 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL ──────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kosh}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kosh_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-kosh_ai}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U kosh -d kosh_ai" ]
+      interval: 5s
+      retries: 5
+
+  # ── Redis ───────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      retries: 5
+
+  # ── Backend API ─────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.backend
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    volumes:
+      - ./backend:/app/backend
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+
+  # ── Celery Worker ───────────────────────────────────────
+  worker:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.worker
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app/backend
+    deploy:
+      replicas: 2 # Horizontal scaling: run 2 workers
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G # OCR is memory-intensive
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+
+  # ── Frontend ────────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.frontend
+    restart: unless-stopped
+    command: npm run dev
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
+      - WATCHPACK_POLLING=true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+
+  # ── MinIO (S3-compatible local storage) ─────────────────
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY:-minioadmin}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  # ── Prometheus ──────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    depends_on:
+      - backend
+
+  # ── Grafana ─────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-kosh_grafana}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infrastructure/grafana/provisioning/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./infrastructure/grafana/provisioning/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./infrastructure/grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+
+  # ── Flower (Celery monitoring) ──────────────────────────
+  flower:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.worker
+    restart: unless-stopped
+    env_file: .env
+    command: celery -A backend.workers.celery_app:celery_app flower --port=5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  prometheus_data:
+  grafana_data:

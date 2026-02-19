@@ -1,0 +1,6 @@
+Merchant ID: eb46491c-00a0-47de-b507-497a429b4332
+Testing with Invoice ID: cd13735e-00de-4432-a1c4-2e4f099aba9b, Status: pending
+Testing DELETE http://localhost:8000/api/v1/invoices/cd13735e-00de-4432-a1c4-2e4f099aba9b...
+DELETE Response: 405 {"detail":"Method Not Allowed"}
+Testing POST http://localhost:8000/api/v1/invoices/cd13735e-00de-4432-a1c4-2e4f099aba9b/cancel...
+CANCEL Response: 404 {"detail":"Not Found"}
