@@ -45,10 +45,12 @@ class Settings(BaseSettings):
     CLOUDINARY_API_KEY: str = ""
     CLOUDINARY_API_SECRET: str = ""
 
-    # ── Resend ──
-    RESEND_API_KEY: str = ""
-
-
+    # ── SMTP (Email) ──
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    MAIL_FROM: str = "Kosh-AI <onboarding@kosh-ai.com>"
     # ── OCR ──
     OCR_PRIMARY_PROVIDER: str = "tesseract"
     TESSERACT_CMD: Optional[str] = None
