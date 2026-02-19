@@ -1,0 +1,39 @@
+services:
+  # ── Backend API ──────────────────────────────────────────
+  - type: web
+    name: kosh-ai-backend
+    env: docker
+    dockerfilePath: infrastructure/Dockerfile.backend
+    plan: free # or your desired plan
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      - fromGroup: kosh-ai-secrets
+
+  # ── Background Worker ────────────────────────────────────
+  - type: worker
+    name: kosh-ai-worker
+    env: docker
+    dockerfilePath: infrastructure/Dockerfile.worker
+    plan: free
+    envVars:
+      - key: APP_ENV
+        value: production
+      - fromGroup: kosh-ai-secrets
+
+envVarGroups:
+  - name: kosh-ai-secrets
+    envVars:
+      - key: DATABASE_URL
+      - key: DATABASE_URL_SYNC
+      - key: REDIS_URL
+      - key: CELERY_BROKER_URL
+      - key: CELERY_RESULT_BACKEND
+      - key: JWT_SECRET_KEY
+      - key: SECRET_KEY
+      - key: CLOUDINARY_CLOUD_NAME
+      - key: CLOUDINARY_API_KEY
+      - key: CLOUDINARY_API_SECRET
+      - key: BACKEND_CORS_ORIGINS
