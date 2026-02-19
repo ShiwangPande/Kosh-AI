@@ -279,5 +279,6 @@ docker exec -e PYTHONPATH=. koshai-backend-1 python scripts/import_kaggle.py
 ---
 
 **Kosh-AI: Built for Indian Merchants. Built for the data truth.**
-#   K o s h - A I  
+#   K o s h - A I 
+ 
  
