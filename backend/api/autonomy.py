@@ -28,6 +28,9 @@ class ModelOut(BaseModel):
     is_baseline: bool
     performance_score: Optional[float]
 
+    model_config = {"protected_namespaces": ()}
+
+
 class ExperimentOut(BaseModel):
     name: str
     status: str
